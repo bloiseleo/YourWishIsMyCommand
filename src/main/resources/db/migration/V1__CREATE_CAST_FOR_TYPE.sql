@@ -1,0 +1,1 @@
+CREATE CAST (varchar as user_roles) WITH INOUT AS IMPLICIT;

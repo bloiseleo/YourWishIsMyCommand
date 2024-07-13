@@ -1,0 +1,8 @@
+CREATE TYPE user_roles AS ENUM ('GUEST', 'CLIENT', 'PROFESSIONAL');
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    password TEXT NOT NULL,
+    role user_roles NOT NULL DEFAULT 'GUEST'
+);

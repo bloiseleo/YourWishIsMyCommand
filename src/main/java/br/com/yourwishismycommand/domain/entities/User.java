@@ -4,22 +4,28 @@ public class User {
     private String name;
     private UserRole role;
     private Email email;
+    private String password;
     public User(
             String name,
             Email email,
-            UserRole role
+            UserRole role,
+            String password
     ) {
         this.name = name;
         this.email = email;
         this.role = role;
+        this.password = password;
     }
-    private String getName() {
+    public String getName() {
         return name;
     }
-    private UserRole getRole() {
+    public UserRole getRole() {
         return role;
     }
-    private Email getEmail() {
+    public Email getEmail() {
         return email;
+    }
+    public String getPassword() {
+        return password;
     }
 }

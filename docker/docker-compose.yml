@@ -1,0 +1,9 @@
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: ywimc
+    ports:
+      - 5432:5432

@@ -1,6 +1,8 @@
 package br.com.yourwishismycommand.infra.controllers;
 
 import br.com.yourwishismycommand.application.dtos.APIBaseResponse;
+import br.com.yourwishismycommand.application.dtos.APIValuableResponse;
+import br.com.yourwishismycommand.domain.exceptions.ApplicationValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -31,5 +34,15 @@ public class ExceptionController {
                                 "An internal server error occured. Please contact the administrator"
                         )
                 );
+    }
+    @ExceptionHandler({ApplicationValidationException.class})
+    public ResponseEntity<APIValuableResponse<List<String>>> handleApplicationException(ApplicationValidationException applicationValidationException) {
+        return ResponseEntity.unprocessableEntity().body(
+                new APIValuableResponse<>(
+                        HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                        applicationValidationException.getMessage(),
+                        applicationValidationException.getViolationsMessages()
+                )
+        );
     }
 }

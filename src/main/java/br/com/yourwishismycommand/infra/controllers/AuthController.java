@@ -1,20 +1,21 @@
 package br.com.yourwishismycommand.infra.controllers;
 
+import br.com.yourwishismycommand.application.usecases.RegisterUserUseCase;
 import br.com.yourwishismycommand.infra.dtos.UserDTO;
-import br.com.yourwishismycommand.infra.validators.groups.Create;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+    @Autowired
+    private RegisterUserUseCase registerUserUseCase;
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
-    public String register(@Validated(Create.class) UserDTO createUserDTO) {
-        return "Hello World!";
+    public String register(@RequestBody UserDTO createUserDTO) {
+        var user = registerUserUseCase.registerUser(createUserDTO);
+        return "olá";
     }
 }
