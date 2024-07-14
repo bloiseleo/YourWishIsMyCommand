@@ -9,6 +9,7 @@ import br.com.yourwishismycommand.application.usecases.RegisterUserUseCase;
 import br.com.yourwishismycommand.application.usecases.RegisterUserUseCaseImpl;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 import br.com.yourwishismycommand.infra.repositoy.UserRepositoryImpl;
+import br.com.yourwishismycommand.infra.security.JwtFilter;
 import br.com.yourwishismycommand.infra.services.AuthenticationServiceImpl;
 import br.com.yourwishismycommand.infra.services.JakartaBeanValidator;
 import br.com.yourwishismycommand.infra.services.JwtServiceImpl;
@@ -53,5 +54,9 @@ public class ConfigureDependency {
             @Value("${jwt.issuer}") String issuer
     ) {
         return new JwtServiceImpl(secret, issuer);
+    }
+    @Bean
+    public JwtFilter jwtFilter(JwtManagerService jwtManagerService) {
+        return new JwtFilter(jwtManagerService);
     }
 }
