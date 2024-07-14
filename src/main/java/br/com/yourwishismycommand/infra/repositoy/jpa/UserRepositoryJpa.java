@@ -4,6 +4,9 @@ import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.infra.schemas.UserSchema;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface UserRepositoryJpa extends CrudRepository<UserSchema, Integer> {
     boolean existsByEmail(Email email);
+    Optional<UserSchema> findUserSchemaByEmail(Email email);
 }
