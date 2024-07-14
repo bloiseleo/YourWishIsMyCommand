@@ -28,6 +28,9 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(matcher -> matcher
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/swagger-config").permitAll()
+                        .requestMatchers("/v3/api-docs").permitAll()
                         .anyRequest().authenticated()
                 );
         return httpSecurity.build();

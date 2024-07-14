@@ -1,6 +1,7 @@
 package br.com.yourwishismycommand.infra.controllers;
 
 import br.com.yourwishismycommand.application.dtos.APIBaseResponse;
+import br.com.yourwishismycommand.application.dtos.APIValuableResponse;
 import br.com.yourwishismycommand.application.usecases.AuhtenticateUserUseCase;
 import br.com.yourwishismycommand.application.usecases.RegisterUserUseCase;
 import br.com.yourwishismycommand.domain.exceptions.InvalidCredentialsException;
@@ -29,7 +30,12 @@ public class AuthController {
     }
     @PostMapping("login")
     @ResponseStatus(HttpStatus.OK)
-    public void login(@RequestBody UserDTO loginDTO) throws InvalidCredentialsException {
-        auhtenticateUserUseCase.authenticate(loginDTO);
+    public ResponseEntity<APIValuableResponse<String>> login(@RequestBody UserDTO loginDTO) throws InvalidCredentialsException {
+        var token = auhtenticateUserUseCase.authenticate(loginDTO);
+        return ResponseEntity.ok(new APIValuableResponse<>(
+                HttpStatus.OK.value(),
+                "Successfully authenticated",
+                token
+        ));
     }
 }
