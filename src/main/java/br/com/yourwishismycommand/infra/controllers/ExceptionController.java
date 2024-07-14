@@ -3,6 +3,9 @@ package br.com.yourwishismycommand.infra.controllers;
 import br.com.yourwishismycommand.application.dtos.APIBaseResponse;
 import br.com.yourwishismycommand.application.dtos.APIValuableResponse;
 import br.com.yourwishismycommand.domain.exceptions.ApplicationValidationException;
+import br.com.yourwishismycommand.domain.exceptions.EmailAlreadyTakenException;
+import br.com.yourwishismycommand.domain.exceptions.InvalidCredentialsException;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,5 +47,25 @@ public class ExceptionController {
                         applicationValidationException.getViolationsMessages()
                 )
         );
+    }
+    @ExceptionHandler({InvalidCredentialsException.class})
+    public ResponseEntity<APIBaseResponse> handleInvalidCredentialsException(InvalidCredentialsException invalidCredentialsException) {
+        logger.debug(invalidCredentialsException.getMessage());
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(new APIBaseResponse(
+                   HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                   "Invalid Credentials"
+                ));
+    }
+    @ExceptionHandler({EmailAlreadyTakenException.class})
+    public ResponseEntity<APIBaseResponse> handleEmailAlreadyTakenException(EmailAlreadyTakenException emailAlreadyTakenException) {
+        return ResponseEntity.unprocessableEntity()
+                .body(
+                        new APIBaseResponse(
+                                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                                emailAlreadyTakenException.getMessage()
+                        )
+                );
     }
 }

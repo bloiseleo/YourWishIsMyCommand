@@ -1,6 +1,6 @@
 package br.com.yourwishismycommand.application.usecases;
 
-import br.com.yourwishismycommand.application.dtos.RegisterUserDTO;
+import br.com.yourwishismycommand.application.dtos.inbound.RegisterUserDTO;
 import br.com.yourwishismycommand.application.services.AnnotationBasedValidator;
 import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.domain.entities.User;
@@ -9,8 +9,8 @@ import br.com.yourwishismycommand.domain.exceptions.EmailAlreadyTakenException;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 
 public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
-    private AnnotationBasedValidator validator;
-    private UserRepository userRepository;
+    private final AnnotationBasedValidator validator;
+    private final UserRepository userRepository;
     public RegisterUserUseCaseImpl(AnnotationBasedValidator validator, UserRepository userRepository) {
         this.validator = validator;
         this.userRepository = userRepository;

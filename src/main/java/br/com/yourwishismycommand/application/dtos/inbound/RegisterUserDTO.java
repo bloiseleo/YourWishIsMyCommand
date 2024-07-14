@@ -1,4 +1,4 @@
-package br.com.yourwishismycommand.application.dtos;
+package br.com.yourwishismycommand.application.dtos.inbound;
 
 public interface RegisterUserDTO {
     String email();

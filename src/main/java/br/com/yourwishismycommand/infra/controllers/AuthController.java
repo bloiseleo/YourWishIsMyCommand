@@ -1,7 +1,9 @@
 package br.com.yourwishismycommand.infra.controllers;
 
 import br.com.yourwishismycommand.application.dtos.APIBaseResponse;
+import br.com.yourwishismycommand.application.usecases.AuhtenticateUserUseCase;
 import br.com.yourwishismycommand.application.usecases.RegisterUserUseCase;
+import br.com.yourwishismycommand.domain.exceptions.InvalidCredentialsException;
 import br.com.yourwishismycommand.infra.dtos.UserDTO;
 import org.springframework.http.HttpStatus;
 
@@ -12,8 +14,10 @@ import static br.com.yourwishismycommand.infra.HttpResponseHelper.created;
 @RequestMapping("auth")
 public class AuthController {
     private final RegisterUserUseCase registerUserUseCase;
-    public AuthController(RegisterUserUseCase   registerUserUseCase) {
+    private final AuhtenticateUserUseCase auhtenticateUserUseCase;
+    public AuthController(RegisterUserUseCase   registerUserUseCase, AuhtenticateUserUseCase auhtenticateUserUseCase) {
         this.registerUserUseCase = registerUserUseCase;
+        this.auhtenticateUserUseCase = auhtenticateUserUseCase;
     }
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -22,5 +26,10 @@ public class AuthController {
         return created(
                 String.format("User of email %s created successfully", user.getEmail())
         );
+    }
+    @PostMapping("login")
+    @ResponseStatus(HttpStatus.OK)
+    public void login(@RequestBody UserDTO loginDTO) throws InvalidCredentialsException {
+        auhtenticateUserUseCase.authenticate(loginDTO);
     }
 }

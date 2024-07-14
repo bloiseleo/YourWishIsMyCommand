@@ -4,7 +4,7 @@ import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.domain.entities.User;
 import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.infra.schemas.converters.EmailConverter;
-import br.com.yourwishismycommand.infra.schemas.converters.UserRoleConverter;
+import br.com.yourwishismycommand.infra.schemas.listeners.EncoderListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +13,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
+@EntityListeners(EncoderListener.class)
 public class UserSchema {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
