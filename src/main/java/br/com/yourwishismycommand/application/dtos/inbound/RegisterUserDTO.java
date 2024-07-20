@@ -4,5 +4,4 @@ public interface RegisterUserDTO {
     String email();
     String name();
     String password();
-    String role();
 }

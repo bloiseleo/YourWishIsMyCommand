@@ -16,7 +16,7 @@ import static br.com.yourwishismycommand.infra.HttpResponseHelper.created;
 public class AuthController {
     private final RegisterUserUseCase registerUserUseCase;
     private final AuhtenticateUserUseCase auhtenticateUserUseCase;
-    public AuthController(RegisterUserUseCase   registerUserUseCase, AuhtenticateUserUseCase auhtenticateUserUseCase) {
+    public AuthController(RegisterUserUseCase registerUserUseCase, AuhtenticateUserUseCase auhtenticateUserUseCase) {
         this.registerUserUseCase = registerUserUseCase;
         this.auhtenticateUserUseCase = auhtenticateUserUseCase;
     }

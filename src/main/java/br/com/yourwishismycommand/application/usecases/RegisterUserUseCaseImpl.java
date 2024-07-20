@@ -4,7 +4,6 @@ import br.com.yourwishismycommand.application.dtos.inbound.RegisterUserDTO;
 import br.com.yourwishismycommand.application.services.AnnotationBasedValidator;
 import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.domain.entities.User;
-import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.domain.exceptions.EmailAlreadyTakenException;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 
@@ -20,7 +19,6 @@ public class RegisterUserUseCaseImpl extends AbstractUseCase implements Register
         var user = new User(
                 registerUserDTO.name(),
                 new Email(registerUserDTO.email()),
-                UserRole.valueOf(registerUserDTO.role()),
                 registerUserDTO.password()
         );
         if(userRepository.userExists(user)) throw new EmailAlreadyTakenException(user.getEmail().toString());

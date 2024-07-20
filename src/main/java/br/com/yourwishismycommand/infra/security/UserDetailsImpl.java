@@ -1,6 +1,7 @@
 package br.com.yourwishismycommand.infra.security;
 
 import br.com.yourwishismycommand.domain.entities.User;
+import br.com.yourwishismycommand.domain.entities.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ public class UserDetailsImpl implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        return List.of(new SimpleGrantedAuthority(UserRole.GUEST.name()));
     }
 
     @Override

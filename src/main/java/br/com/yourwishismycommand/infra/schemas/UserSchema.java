@@ -28,9 +28,6 @@ public class UserSchema {
     private String name;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<ProfileSchema> profiles;
@@ -39,7 +36,6 @@ public class UserSchema {
                 id,
                 name,
                 email,
-                role,
                 password
         );
     }
@@ -50,7 +46,6 @@ public class UserSchema {
         }
         schema.setEmail(user.getEmail());
         schema.setName(user.getName());
-        schema.setRole(user.getRole());
         schema.setPassword(user.getPassword());
         return schema;
     }

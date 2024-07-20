@@ -18,7 +18,5 @@ public record UserDTO(
         String password,
         @NotEmpty(groups = {Create.class, Access.class})
         @Email(groups = {Create.class})
-        String email,
-        @NotEmpty(groups = {Create.class})
-        String role
+        String email
 ) implements RegisterUserDTO, LoginUserDTO { }

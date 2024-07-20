@@ -32,7 +32,6 @@ public class JwtServiceImpl implements JwtManagerService {
                 .withExpiresAt(generateExpireAt())
                 .withSubject(user.getEmail().toString())
                 .withClaim("id", user.getId())
-                .withClaim("role", user.getRole().name())
                 .withClaim("name", user.getName())
                 .sign(algorithm);
     }
@@ -48,7 +47,6 @@ public class JwtServiceImpl implements JwtManagerService {
                     decoded.getClaim("id").asInt(),
                     decoded.getClaim("name").asString(),
                     new Email(decoded.getSubject()),
-                    UserRole.valueOf(decoded.getClaim("role").asString()),
                     ""
             );
         } catch (JWTVerificationException jwtVerificationException) {
