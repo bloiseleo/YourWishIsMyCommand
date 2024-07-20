@@ -6,15 +6,11 @@ import br.com.yourwishismycommand.application.usecases.CreateProfileUseCase;
 import br.com.yourwishismycommand.domain.entities.User;
 import br.com.yourwishismycommand.domain.exceptions.InvalidCredentialsException;
 import br.com.yourwishismycommand.infra.dtos.ProfileDTO;
-import br.com.yourwishismycommand.infra.validators.groups.Create;
+import br.com.yourwishismycommand.infra.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.security.sasl.AuthenticationException;
 
 @RestController
 @RequestMapping("profile")
@@ -39,8 +35,10 @@ public class ProfileController {
         return jwtManagerService.decodeJwt(token[1]);
     }
     @PostMapping()
-    public APIBaseResponse createClient(@RequestHeader("Authorization") String authoriztion, @RequestBody ProfileDTO profileDTO) throws InvalidCredentialsException {
-        var user = extractUserFromHeader(authoriztion);
+    public APIBaseResponse createClient(@RequestBody ProfileDTO profileDTO) {
+        var authenticationToken = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+        var details = (UserDetailsImpl) authenticationToken.getPrincipal();
+        var user = details.getUser();
         createProfileUseCase.createProfile(profileDTO, user);
         return new APIBaseResponse(
                 HttpStatus.CREATED.value(),
