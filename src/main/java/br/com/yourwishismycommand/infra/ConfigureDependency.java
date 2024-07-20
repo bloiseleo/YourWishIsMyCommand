@@ -3,22 +3,18 @@ package br.com.yourwishismycommand.infra;
 import br.com.yourwishismycommand.application.services.AnnotationBasedValidator;
 import br.com.yourwishismycommand.application.services.AuthenticationService;
 import br.com.yourwishismycommand.application.services.JwtManagerService;
-import br.com.yourwishismycommand.application.services.SchemaEntityAdapter;
 import br.com.yourwishismycommand.application.strategy.CreateClientProfile;
 import br.com.yourwishismycommand.application.strategy.CreateProfessionalProfile;
 import br.com.yourwishismycommand.application.usecases.*;
-import br.com.yourwishismycommand.domain.entities.Profile;
 import br.com.yourwishismycommand.domain.repositories.ProfileRepository;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 import br.com.yourwishismycommand.infra.repositoy.ProfileRepositoryImpl;
 import br.com.yourwishismycommand.infra.repositoy.UserRepositoryImpl;
 import br.com.yourwishismycommand.infra.repositoy.jpa.ProfileRepositoryJpa;
-import br.com.yourwishismycommand.infra.schemas.ProfileSchema;
 import br.com.yourwishismycommand.infra.security.JwtFilter;
 import br.com.yourwishismycommand.infra.services.AuthenticationServiceImpl;
 import br.com.yourwishismycommand.infra.services.JakartaBeanValidator;
 import br.com.yourwishismycommand.infra.services.JwtServiceImpl;
-import br.com.yourwishismycommand.infra.services.SchemaEntityProfileAdapter;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,10 +28,9 @@ public class ConfigureDependency {
         return new UserRepositoryImpl();
     }
     @Bean
-    public ProfileRepository profileRepository(ProfileRepositoryJpa profileRepositoryJpa, SchemaEntityAdapter<ProfileSchema, Profile> adapter) {
+    public ProfileRepository profileRepository(ProfileRepositoryJpa profileRepositoryJpa) {
         return new ProfileRepositoryImpl(
-                profileRepositoryJpa,
-                adapter
+                profileRepositoryJpa
         );
     }
     @Bean
@@ -56,10 +51,6 @@ public class ConfigureDependency {
     @Bean
     public CreateProfessionalProfile createProfessionalProfile(AnnotationBasedValidator annotationBasedValidator, ProfileRepository profileRepository) {
         return new CreateProfessionalProfile(annotationBasedValidator, profileRepository);
-    }
-    @Bean
-    public SchemaEntityAdapter<ProfileSchema, Profile> profileSchemaProfileSchemaEntityAdapter() {
-        return new SchemaEntityProfileAdapter();
     }
     @Bean
     public AnnotationBasedValidator annotationBasedValidator(Validator validator) {
