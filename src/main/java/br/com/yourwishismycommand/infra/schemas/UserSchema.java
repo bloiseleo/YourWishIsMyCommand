@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -29,6 +31,9 @@ public class UserSchema {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<ProfileSchema> profiles;
     public User toDomain() {
         return new User(
                 id,

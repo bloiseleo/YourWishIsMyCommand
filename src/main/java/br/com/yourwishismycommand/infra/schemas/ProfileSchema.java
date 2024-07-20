@@ -24,7 +24,7 @@ public class ProfileSchema {
     private UserRole role;
     @Column(name = "trading_name")
     private String tradingName;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserSchema user;
     public ProfileSchema() {}
@@ -45,6 +45,14 @@ public class ProfileSchema {
             AddressSchema.create(profile.getAddress()),
                 profile.getUserRole(),
                 profile.getTradingName()
+        );
+    }
+    public Profile toDomain() {
+        return new Profile(
+                user.toDomain(),
+                addressSchema.toDomain(),
+                tradingName,
+                role
         );
     }
 }

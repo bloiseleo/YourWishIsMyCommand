@@ -78,6 +78,10 @@ public class ConfigureDependency {
         return new AuthenticationServiceImpl(authenticationManager, userRepository, jwtManagerService);
     }
     @Bean
+    public ExtractAllProfilesUseCase extractAllProfilesUseCase(ProfileRepository profileRepository) {
+        return new ExtractAllProfilesUseCaseImpl(profileRepository);
+    }
+    @Bean
     public AuhtenticateUserUseCase auhtenticateUserUseCase(
             AnnotationBasedValidator annotationBasedValidator,
             AuthenticationService authenticationService
