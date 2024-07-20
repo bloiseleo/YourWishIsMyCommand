@@ -8,16 +8,15 @@ import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.domain.exceptions.EmailAlreadyTakenException;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 
-public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
-    private final AnnotationBasedValidator validator;
+public class RegisterUserUseCaseImpl extends AbstractUseCase implements RegisterUserUseCase {
     private final UserRepository userRepository;
     public RegisterUserUseCaseImpl(AnnotationBasedValidator validator, UserRepository userRepository) {
-        this.validator = validator;
+        super(validator);
         this.userRepository = userRepository;
     }
     @Override
     public User registerUser(RegisterUserDTO registerUserDTO) {
-        validator.validateCreate(registerUserDTO);
+        annotationBasedValidator.validateCreate(registerUserDTO);
         var user = new User(
                 registerUserDTO.name(),
                 new Email(registerUserDTO.email()),

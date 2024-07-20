@@ -1,5 +1,6 @@
 package br.com.yourwishismycommand.infra.security;
 
+import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/swagger-config").permitAll()
                         .requestMatchers("/v3/api-docs").permitAll()
+                        .requestMatchers("/profile").hasAuthority(UserRole.GUEST.toString())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, AuthorizationFilter.class);

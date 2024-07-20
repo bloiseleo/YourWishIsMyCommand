@@ -1,0 +1,2 @@
+ALTER TABLE profiles
+ALTER COLUMN trading_name DROP NOT NULL
