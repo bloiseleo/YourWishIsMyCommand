@@ -74,6 +74,7 @@
                     <url>jdbc:postgresql://localhost:5432/ywimc</url>
                     <user>root</user>
                     <password>root</password>
+                    <cleanDisabled>false</cleanDisabled>
                 </configuration>
                 <dependencies>
                     <dependency>
