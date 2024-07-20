@@ -31,6 +31,7 @@ public class JwtServiceImpl implements JwtManagerService {
                 .withIssuer(issuer)
                 .withExpiresAt(generateExpireAt())
                 .withSubject(user.getEmail().toString())
+                .withClaim("id", user.getId())
                 .withClaim("role", user.getRole().name())
                 .withClaim("name", user.getName())
                 .sign(algorithm);
@@ -44,6 +45,7 @@ public class JwtServiceImpl implements JwtManagerService {
                     .build();
             var decoded = verifier.verify(token);
             return new User(
+                    decoded.getClaim("id").asInt(),
                     decoded.getClaim("name").asString(),
                     new Email(decoded.getSubject()),
                     UserRole.valueOf(decoded.getClaim("role").asString()),

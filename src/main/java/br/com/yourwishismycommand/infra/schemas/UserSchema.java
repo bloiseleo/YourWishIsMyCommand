@@ -31,6 +31,7 @@ public class UserSchema {
     private UserRole role;
     public User toDomain() {
         return new User(
+                id,
                 name,
                 email,
                 role,
@@ -39,6 +40,9 @@ public class UserSchema {
     }
     public static UserSchema from(User user) {
         var schema = new UserSchema();
+        if(user.getId() != 0) {
+            schema.setId(user.getId());
+        }
         schema.setEmail(user.getEmail());
         schema.setName(user.getName());
         schema.setRole(user.getRole());
