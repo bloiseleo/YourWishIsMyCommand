@@ -1,7 +1,7 @@
 package br.com.yourwishismycommand.infra.security;
 
+import br.com.yourwishismycommand.application.dtos.UserWithRoleDTO;
 import br.com.yourwishismycommand.application.services.JwtManagerService;
-import br.com.yourwishismycommand.domain.entities.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,13 +45,13 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
-    private void injectUserInSecurityContext(User user) {
+    private void injectUserInSecurityContext(UserWithRoleDTO userWithRoleDTO) {
         var context = SecurityContextHolder.getContext();
-        var userDetails = UserDetailsServiceImpl.adapt(user);
+        var userDetails = UserDetailsServiceImpl.adapt(userWithRoleDTO.user(), userWithRoleDTO.role());
         context.setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                         userDetails,
-                        user.getPassword(),
+                        userWithRoleDTO.user().getPassword(),
                         userDetails.getAuthorities()
                 )
         );

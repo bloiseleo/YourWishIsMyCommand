@@ -1,5 +1,6 @@
 package br.com.yourwishismycommand.infra.services;
 
+import br.com.yourwishismycommand.application.dtos.UserWithRoleDTO;
 import br.com.yourwishismycommand.application.services.JwtManagerService;
 import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.domain.entities.User;
@@ -21,34 +22,40 @@ public class JwtServiceImpl implements JwtManagerService {
         this.secret = secret;
         this.issuer = issuer;
     }
-    private Instant generateExpireAt() {
+    private Instant generateExpireAt(UserRole role) {
+        if (role == UserRole.GUEST) {
+            return Instant.now().plus(5, ChronoUnit.MINUTES);
+        }
         return Instant.now().plus(1, ChronoUnit.DAYS);
     }
     @Override
-    public String generateJwtToken(User user) {
+    public String generateJwtToken(User user, UserRole role) {
         var algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
                 .withIssuer(issuer)
-                .withExpiresAt(generateExpireAt())
+                .withExpiresAt(generateExpireAt(role))
                 .withSubject(user.getEmail().toString())
                 .withClaim("id", user.getId())
                 .withClaim("name", user.getName())
+                .withClaim("role", role.name())
                 .sign(algorithm);
     }
     @Override
-    public User decodeJwt(String token) {
+    public UserWithRoleDTO decodeJwt(String token) {
         try {
             var algorithm = Algorithm.HMAC256(secret);
             var verifier = JWT.require(algorithm)
                     .withIssuer(issuer)
                     .build();
             var decoded = verifier.verify(token);
-            return new User(
+            var user = new User(
                     decoded.getClaim("id").asInt(),
                     decoded.getClaim("name").asString(),
                     new Email(decoded.getSubject()),
                     ""
             );
+            var role = decoded.getClaim("role").asString();
+            return new UserWithRoleDTO(user, UserRole.valueOf(role));
         } catch (JWTVerificationException jwtVerificationException) {
             throw new RuntimeException(jwtVerificationException);
         }

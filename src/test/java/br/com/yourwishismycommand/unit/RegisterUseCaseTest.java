@@ -4,7 +4,6 @@ import br.com.yourwishismycommand.application.services.AnnotationBasedValidator;
 import br.com.yourwishismycommand.application.usecases.RegisterUserUseCaseImpl;
 import br.com.yourwishismycommand.domain.entities.Email;
 import br.com.yourwishismycommand.domain.entities.User;
-import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.domain.exceptions.ApplicationValidationException;
 import br.com.yourwishismycommand.domain.exceptions.EmailAlreadyTakenException;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
@@ -30,24 +29,21 @@ public class RegisterUseCaseTest {
         var dto = new UserDTO(
                 "Teste",
                 "12345678",
-                "teste@email.com",
-                "GUEST"
+                "teste@email.com"
         );
         when(userRepository.userExists(any())).thenReturn(false);
-        when(userRepository.save(any())).thenReturn(new User(dto.name(), new Email(dto.email()), UserRole.GUEST, dto.password()));
+        when(userRepository.save(any())).thenReturn(new User(dto.name(), new Email(dto.email()), dto.password()));
         var user = registerUserUseCase.registerUser(dto);
         assertNotNull(user);
         assertEquals(dto.name(), user.getName());
         assertEquals(dto.email(), user.getEmail().toString());
-        assertEquals(UserRole.valueOf(dto.role()), user.getRole());
     }
     @Test
     void createUser_FailBecauseAlreadyExists() {
         var dto = new UserDTO(
                 "Teste",
                 "12345678",
-                "teste@email.com",
-                "GUEST"
+                "teste@email.com"
         );
         when(userRepository.userExists(any())).thenReturn(true);
         assertThrows(EmailAlreadyTakenException.class, () -> {
@@ -59,8 +55,7 @@ public class RegisterUseCaseTest {
         var dto = new UserDTO(
                 "Teste",
                 "12345678",
-                "teste@email.com",
-                "GUEST"
+                "teste@email.com"
         );
         doThrow(ApplicationValidationException.class).when(annotationBasedValidator).validateCreate(any());
         assertThrows(ApplicationValidationException.class, () -> {

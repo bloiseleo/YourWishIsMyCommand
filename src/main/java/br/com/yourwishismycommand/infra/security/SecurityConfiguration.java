@@ -1,5 +1,6 @@
 package br.com.yourwishismycommand.infra.security;
 
+import br.com.yourwishismycommand.application.services.RoleDecisionMakerService;
 import br.com.yourwishismycommand.domain.entities.UserRole;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +41,8 @@ public class SecurityConfiguration {
         return httpSecurity.build();
     }
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new UserDetailsServiceImpl(userRepository);
+    public UserDetailsService userDetailsService(UserRepository userRepository, RoleDecisionMakerService roleDecisionMakerService) {
+        return new UserDetailsServiceImpl(userRepository, roleDecisionMakerService);
     }
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {

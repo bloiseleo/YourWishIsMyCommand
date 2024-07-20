@@ -11,12 +11,20 @@ import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
     private User user;
-    public UserDetailsImpl(User user) {
+    private UserRole role;
+    public UserDetailsImpl(User user, UserRole role) {
         this.user = user;
+        this.role = role;
+    }
+    public UserRole getRole() {
+        if(role == null) {
+            return UserRole.GUEST;
+        }
+        return role;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(UserRole.GUEST.name()));
+        return List.of(new SimpleGrantedAuthority(getRole().name()));
     }
 
     @Override

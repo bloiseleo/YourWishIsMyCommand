@@ -1,8 +1,6 @@
 package br.com.yourwishismycommand.infra;
 
-import br.com.yourwishismycommand.application.services.AnnotationBasedValidator;
-import br.com.yourwishismycommand.application.services.AuthenticationService;
-import br.com.yourwishismycommand.application.services.JwtManagerService;
+import br.com.yourwishismycommand.application.services.*;
 import br.com.yourwishismycommand.application.strategy.CreateClientProfile;
 import br.com.yourwishismycommand.application.strategy.CreateProfessionalProfile;
 import br.com.yourwishismycommand.application.usecases.*;
@@ -63,10 +61,13 @@ public class ConfigureDependency {
     @Bean
     public AuthenticationService authenticationService(
             AuthenticationManager authenticationManager,
-            UserRepository userRepository,
             JwtManagerService jwtManagerService
     ) {
-        return new AuthenticationServiceImpl(authenticationManager, userRepository, jwtManagerService);
+        return new AuthenticationServiceImpl(authenticationManager, jwtManagerService);
+    }
+    @Bean
+    public RoleDecisionMakerService roleDecisionMakerService(ProfileRepository profileRepository)  {
+        return new RoleDecisionMakerServiceImpl(profileRepository);
     }
     @Bean
     public ExtractAllProfilesUseCase extractAllProfilesUseCase(ProfileRepository profileRepository) {
@@ -90,4 +91,5 @@ public class ConfigureDependency {
     public JwtFilter jwtFilter(JwtManagerService jwtManagerService) {
         return new JwtFilter(jwtManagerService);
     }
+
 }
