@@ -4,10 +4,13 @@ import br.com.yourwishismycommand.application.services.*;
 import br.com.yourwishismycommand.application.strategy.CreateClientProfile;
 import br.com.yourwishismycommand.application.strategy.CreateProfessionalProfile;
 import br.com.yourwishismycommand.application.usecases.*;
+import br.com.yourwishismycommand.domain.repositories.OrderRepository;
 import br.com.yourwishismycommand.domain.repositories.ProfileRepository;
 import br.com.yourwishismycommand.domain.repositories.UserRepository;
+import br.com.yourwishismycommand.infra.repositoy.OrderRepositoryImpl;
 import br.com.yourwishismycommand.infra.repositoy.ProfileRepositoryImpl;
 import br.com.yourwishismycommand.infra.repositoy.UserRepositoryImpl;
+import br.com.yourwishismycommand.infra.repositoy.jpa.OrderRepositoryJpa;
 import br.com.yourwishismycommand.infra.repositoy.jpa.ProfileRepositoryJpa;
 import br.com.yourwishismycommand.infra.security.JwtFilter;
 import br.com.yourwishismycommand.infra.services.AuthenticationServiceImpl;
@@ -91,5 +94,12 @@ public class ConfigureDependency {
     public JwtFilter jwtFilter(JwtManagerService jwtManagerService) {
         return new JwtFilter(jwtManagerService);
     }
-
+    @Bean
+    public OpenNewOrderUseCase openNewOrderUseCase(AnnotationBasedValidator annotationBasedValidator, UserRepository userRepository, OrderRepository orderRepository) {
+        return new OpenNewOrderUseCaseImpl(annotationBasedValidator, userRepository, orderRepository);
+    }
+    @Bean
+    public OrderRepository orderRepository(OrderRepositoryJpa orderRepositoryJpa) {
+        return new OrderRepositoryImpl(orderRepositoryJpa);
+    }
 }

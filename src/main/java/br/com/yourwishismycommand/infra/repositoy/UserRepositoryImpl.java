@@ -28,4 +28,13 @@ public class UserRepositoryImpl implements UserRepository {
         if(optionalSchema.isEmpty()) return Optional.empty();
         return Optional.of(optionalSchema.get().toDomain());
     }
+
+    @Override
+    public Optional<User> findById(int id) {
+        var schema = userRepositoryJpa.findById(id);
+        if (schema.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(schema.get().toDomain());
+    }
 }

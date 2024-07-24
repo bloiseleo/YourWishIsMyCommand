@@ -9,4 +9,5 @@ public interface UserRepository {
     User save(User user);
     boolean userExists(User user);
     Optional<User> findByEmail(Email email);
+    Optional<User> findById(int id);
 }
